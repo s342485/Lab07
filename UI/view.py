@@ -1,3 +1,5 @@
+from msilib.schema import ListView
+
 import flet as ft
 from UI.alert import AlertManager
 
@@ -30,16 +32,25 @@ class View:
     def update(self):
         self.page.update()
 
+    def aggiorna_pagina(self):
+        pass
+
     def load_interface(self):
         """ Crea e aggiunge gli elementi di UI alla pagina e la aggiorna. """
         # --- Sezione 1: Intestazione ---
         self.txt_titolo = ft.Text(value="Musei di Torino", size=38, weight=ft.FontWeight.BOLD)
 
         # --- Sezione 2: Filtraggio ---
-        # TODO
+        self.lista_musei = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
+        self.lista_epoche_artefatti = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
+        #lavorare su aggiorna pagina!!!!!!!!
+        dd1 = ft.Dropdown(editable=True, label="Museo", width=200)
+        dd2 = ft.Dropdown(editable=True, label="Epoca", width=200)
+
 
         # Sezione 3: Artefatti
-        # TODO
+        pulsante_mostra_artefatti = ft.ElevatedButton("Mostra Artefatti", on_click=self.aggiorna_pagina)
+
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)
@@ -53,10 +64,11 @@ class View:
             ft.Divider(),
 
             # Sezione 2: Filtraggio
-            # TODO
+            ft.Row(controls=[dd1, dd2], alignment=ft.MainAxisAlignment.CENTER),
+            ft.Divider(),
 
             # Sezione 3: Artefatti
-            # TODO
+            ft.Row(controls=[pulsante_mostra_artefatti], alignment=ft.MainAxisAlignment.CENTER)
         )
 
         self.page.scroll = "adaptive"
