@@ -23,41 +23,35 @@ class ArtefattoDAO:
 #rivedi
     def get_all_artefatti(self, museo: str | None = None, epoca: str | None = None) -> list[Artefatto]:
         self._artefatti = []
+
         cnx = ConnessioneDB.get_connection()
         cursor = cnx.cursor(dictionary=True)
 
         query = """
-        SELECT *
-        FROM artefatto a
-        JOIN museo m ON a.id_museo = m.id
-        WHERE 1 = 1
+            SELECT a.*
+            FROM artefatto a, museo m
+            WHERE a.id_museo = m.id AND m.nome  = COALESCE(%s, m.nome) AND a.epoca = COALESCE(%s, a.epoca)
         """
 
-        params = []
-
-        if epoca:
-            query += " AND a.epoca = %s"
-            params.append(epoca)
-
-        if museo:
-            query += " AND m.nome = %s"
-            params.append(museo)
-
-        cursor.execute(query, params)
+        # museo = nome del museo (stringa) oppure None
+        # epoca = epoca dell'artefatto (stringa) oppure None
+        cursor.execute(query, (museo, epoca,))
         result = cursor.fetchall()
 
         for row in result:
             self._artefatti.append(
                 Artefatto(
-                    row["id"],
-                    row["nome"],
+                    row["id"],  # id artefatto
+                    row["nome"],  # nome artefatto (non il museo!)
                     row["tipologia"],
                     row["epoca"],
                     row["id_museo"]
                 )
             )
+            # Se ti serve anche il nome del museo, è in: row["nome_museo"]
 
         cursor.close()
         cnx.close()
 
         return self._artefatti
+

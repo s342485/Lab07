@@ -65,7 +65,9 @@ class View:
             ft.Divider(),
 
             # Sezione 3: Artefatti
-            ft.Row(controls=[pulsante_mostra_artefatti], alignment=ft.MainAxisAlignment.CENTER)
+            ft.Row(controls=[pulsante_mostra_artefatti], alignment=ft.MainAxisAlignment.CENTER),
+            self.lista_filtrata
+
         )
 
         self.page.scroll = "adaptive"
