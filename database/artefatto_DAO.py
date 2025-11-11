@@ -32,9 +32,8 @@ class ArtefattoDAO:
             FROM artefatto a, museo m
             WHERE a.id_museo = m.id AND m.nome  = COALESCE(%s, m.nome) AND a.epoca = COALESCE(%s, a.epoca)
         """
+        #COALESCE- se il parametro non è null filtra per nome museo, altrimenti non applica filtro
 
-        # museo = nome del museo (stringa) oppure None
-        # epoca = epoca dell'artefatto (stringa) oppure None
         cursor.execute(query, (museo, epoca,))
         result = cursor.fetchall()
 
@@ -48,7 +47,6 @@ class ArtefattoDAO:
                     row["id_museo"]
                 )
             )
-            # Se ti serve anche il nome del museo, è in: row["nome_museo"]
 
         cursor.close()
         cnx.close()

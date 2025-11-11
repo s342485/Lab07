@@ -23,10 +23,10 @@ class Controller:
 
     # POPOLA DROPDOWN
     def dropdown_musei(self):
-        self._lista_musei = [ft.dropdown.Option("Nessun filtro")]
+        self._lista_musei = [ft.dropdown.Option("Nessun filtro")] #prima opzione nessun filtro
         db_musei = self._model.get_musei()
         for museo in db_musei:
-            self._lista_musei.append(
+            self._lista_musei.append( #aggiunge alla list view i musei del db
                 ft.dropdown.Option(museo.nome)
             )
         return self._lista_musei
@@ -51,7 +51,7 @@ class Controller:
             else:
                 for a in lista_db:
                     self._view.lista_filtrata.controls.append(
-                        ft.Text(f"{a.nome} — {a.epoca}")
+                        ft.Text(f"{a.id} - {a.nome} - {a.tipologia} - {a.epoca}")
                     )
         except Exception as e:
             self._view.show_alert(f"Errore nel caricamento degli artefatti: {e}")
