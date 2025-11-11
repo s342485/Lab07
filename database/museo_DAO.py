@@ -28,4 +28,4 @@ class MuseoDAO:
                 self._musei.append(museo)
             cursor.close()
             cnx.close()
-            return self._musei
+        return self._musei

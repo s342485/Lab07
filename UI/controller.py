@@ -26,7 +26,7 @@ class Controller:
         db_musei = self._model.get_musei()
         for museo in db_musei:
             self._lista_musei.append(
-                ft.dropdown.Option(museo.id, museo.nome)
+                ft.dropdown.Option(museo.nome)
             )
         return self._lista_musei
 
@@ -36,21 +36,15 @@ class Controller:
             self._lista_epoche.append(ft.dropdown.Option(epoca))
         return self._lista_epoche
 
-    # CALLBACKS DROPDOWN
     def callback_scelte(self, museo_selezionato, epoca_selezionata):
         self._view.lista_filtrata.controls.clear() #lista da popolare
 
         try:
             lista_db = self._model.get_artefatti_filtrati(museo_selezionato, epoca_selezionata)
             for artefatto in lista_db:
-                self._view.lista_filtrata.controls.append(ft.Text(f"{artefatto}"))
+                self._view.lista_filtrata.controls.append(ft.Text(f"{artefatto} "))
         except Exception as e:
             self._view.show_alert(f"Errore nel caricamento degli artefatti: {e}")
 
         self._view.update() #riesegue la view aggiornando tutto
 
-
-
-
-    # AZIONE: MOSTRA ARTEFATTI
-    # TODO

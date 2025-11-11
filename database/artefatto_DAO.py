@@ -21,7 +21,7 @@ class ArtefattoDAO:
         return self._epoche
 
 #rivedi
-    def get_all_artefatti(self, museo: int | None = None, epoca: str | None = None) -> list[Artefatto]:
+    def get_all_artefatti(self, museo: str | None = None, epoca: str | None = None) -> list[Artefatto]:
         self._artefatti = []
         cnx = ConnessioneDB.get_connection()
         cursor = cnx.cursor(dictionary=True)
@@ -43,16 +43,10 @@ class ArtefattoDAO:
             query += " AND m.nome = %s"
             params.append(museo)
 
-        print("DAO DEBUG → QUERY:", query)
-        print("DAO DEBUG → PARAMS:", params)
-
         cursor.execute(query, params)
         result = cursor.fetchall()
 
-        print("DAO DEBUG → ROWS:", result)
-
         for row in result:
-            print(" → ARTEFATTO:", row)
             self._artefatti.append(
                 Artefatto(
                     row["id"],
