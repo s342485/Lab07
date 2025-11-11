@@ -26,8 +26,6 @@ class ArtefattoDAO:
         cnx = ConnessioneDB.get_connection()
         cursor = cnx.cursor(dictionary=True)
 
-        print("DAO DEBUG → IN:", museo, epoca)
-
         query = """
         SELECT *
         FROM artefatto a
@@ -42,7 +40,7 @@ class ArtefattoDAO:
             params.append(epoca)
 
         if museo:
-            query += " AND m.id = %s"
+            query += " AND m.nome = %s"
             params.append(museo)
 
         print("DAO DEBUG → QUERY:", query)
@@ -69,4 +67,3 @@ class ArtefattoDAO:
         cnx.close()
 
         return self._artefatti
-
