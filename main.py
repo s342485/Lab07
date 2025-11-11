@@ -10,11 +10,8 @@ def main(page: ft.Page):
     my_view = View(page)
     my_controller = Controller(my_view, my_model)
     my_view.set_controller(my_controller)
-
-    #dao = artefatto_DAO.ArtefattoDAO()
-    #print(dao.get_all_epoche())
-
     my_view.load_interface()
+
 
 
 ft.app(target=main)

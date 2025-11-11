@@ -32,25 +32,22 @@ class View:
     def update(self):
         self.page.update()
 
-    def aggiorna_pagina(self):
-        pass
-
     def load_interface(self):
         """ Crea e aggiunge gli elementi di UI alla pagina e la aggiorna. """
         # --- Sezione 1: Intestazione ---
         self.txt_titolo = ft.Text(value="Musei di Torino", size=38, weight=ft.FontWeight.BOLD)
 
         # --- Sezione 2: Filtraggio ---
-        self.lista_musei = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
-        self.lista_epoche_artefatti = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
-        #lavorare su aggiorna pagina!!!!!!!!
-        dd1 = ft.Dropdown(editable=True, label="Museo", width=200)
-        dd2 = ft.Dropdown(editable=True, label="Epoca", width=200)
+        self.lista_filtrata = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
+
+        #lavorare su aggiorna pagina!!
+        dd1 = ft.Dropdown(editable=True, enable_filter=True,enable_search=True,label="Museo", menu_height=200, menu_width=50,item_height=200,options=self.controller.dropdown_musei())
+        dd2 = ft.Dropdown(editable=True, enable_filter=True, enable_search=True, label="Epoca", menu_height=200, menu_width=50, item_height=200, options=self.controller.dropdown_epoche())
 
 
         # Sezione 3: Artefatti
-        pulsante_mostra_artefatti = ft.ElevatedButton("Mostra Artefatti", on_click=self.aggiorna_pagina)
-
+        #cerca di capire se si può fare diversamente
+        pulsante_mostra_artefatti = ft.ElevatedButton("Mostra Artefatti", on_click= lambda e: self.controller.callback_scelte(dd1.value, dd2.value))
 
         # --- Toggle Tema ---
         self.toggle_cambia_tema = ft.Switch(label="Tema scuro", value=True, on_change=self.cambia_tema)

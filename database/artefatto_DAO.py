@@ -6,20 +6,30 @@ from model.artefattoDTO import Artefatto
 class ArtefattoDAO:
     def __init__(self):
         pass
+    def get_all_epoche(self):
+        self._epoche = []
+        cnx = ConnessioneDB.get_connection()
+        cursor = cnx.cursor(dictionary=True)
+        query = ("SELECT DISTINCT epoca FROM artefatto")
+        cursor.execute(query)
+        result = cursor.fetchall()
+        for row in result:
+            self._epoche.append(row["epoca"])
+
+        cursor.close()
+        cnx.close()
+        return self._epoche
 
 #rivedi
-    def get_all_artefatti(self, museo: Museo | None = None, epoca: str | None = None) -> list[Artefatto]:
+    def get_all_artefatti(self, museo: int | None = None, epoca: str | None = None) -> list[Artefatto]:
+        self._artefatti = []
         cnx = ConnessioneDB.get_connection()
         cursor = cnx.cursor(dictionary=True)
 
-        # Query base
+        print("DAO DEBUG → IN:", museo, epoca)
+
         query = """
-        SELECT 
-            a.id,
-            a.nome,
-            a.tipologia,
-            a.epoca,
-            a.id_museo
+        SELECT *
         FROM artefatto a
         JOIN museo m ON a.id_museo = m.id
         WHERE 1 = 1
@@ -27,22 +37,25 @@ class ArtefattoDAO:
 
         params = []
 
-        # Filtro epoca (se presente)
-        if epoca is not None:
+        if epoca:
             query += " AND a.epoca = %s"
             params.append(epoca)
 
-        # Filtro museo (se presente)
-        if museo is not None:
+        if museo:
             query += " AND m.id = %s"
-            params.append(museo.id)
+            params.append(museo)
+
+        print("DAO DEBUG → QUERY:", query)
+        print("DAO DEBUG → PARAMS:", params)
 
         cursor.execute(query, params)
         result = cursor.fetchall()
 
-        artefatti = []
+        print("DAO DEBUG → ROWS:", result)
+
         for row in result:
-            artefatti.append(
+            print(" → ARTEFATTO:", row)
+            self._artefatti.append(
                 Artefatto(
                     row["id"],
                     row["nome"],
@@ -55,4 +68,5 @@ class ArtefattoDAO:
         cursor.close()
         cnx.close()
 
-        return artefatti
+        return self._artefatti
+
